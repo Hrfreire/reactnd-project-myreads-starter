@@ -25,7 +25,26 @@ class BooksApp extends React.Component {
   onClickAdd = () => {
     this.setState({
       showSearchPage: true
-    })
+    });
+  }
+
+  onChangeBookShelf = (book, newShelf) => {
+    
+    BooksAPI.update(book, newShelf) //update the book on server
+      .then(() => { //after the server update, change the state to reflect the update.
+        this.setState((prevState) => {
+          const books = [ ...prevState.books ]; //clone the book object.
+          const bookIndex = books.findIndex(b => b.id === book.id);
+          
+          if (bookIndex >= 0) { // if book already on list, only changes the shelf.
+            books[bookIndex].shelf = newShelf;
+          } else { // if book is not on the list yet, add it.
+            books.push({ ...book, shelf: newShelf});
+          }
+    
+          return { books };
+        });
+      })
   }
 
   render() {
@@ -52,7 +71,11 @@ class BooksApp extends React.Component {
               <ol className="books-grid"></ol>
             </div>
           </div>
-        ) : <BookList books={this.state.books} onClickAdd={this.onClickAdd}/>}
+        ) : <BookList 
+              books={this.state.books}
+              onClickAdd={this.onClickAdd}
+              onChangeBookShelf={this.onChangeBookShelf}
+            />}
       </div>
     )
   }

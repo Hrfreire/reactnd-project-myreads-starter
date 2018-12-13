@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Book from './Book';
 
-function BookShelf({ title, books }) {
+function BookShelf({ title, books, onChangeBookShelf }) {
   return (
     <div className="bookshelf">
       <h2 className="bookshelf-title">{title}</h2>
@@ -10,7 +10,13 @@ function BookShelf({ title, books }) {
         <ol className="books-grid">
           {
             books
-              .map(book => <Book key={book.id} book={book} />)
+              .map(book => (
+                <Book
+                  key={book.id}
+                  book={book}
+                  onChangeBookShelf={onChangeBookShelf}
+                />
+              ))
           }
         </ol>
       </div>
@@ -25,6 +31,7 @@ BookShelf.propTypes = {
       id: PropTypes.string.isRequired,
     }),
   ).isRequired,
+  onChangeBookShelf: PropTypes.func.isRequired,
 };
 
 export default BookShelf;
