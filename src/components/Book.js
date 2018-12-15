@@ -10,7 +10,18 @@ function Book({ book, onChangeBookShelf }) {
     <li>
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{ width: 128, height: 192, backgroundImage: `url("${imageLinks.smallThumbnail}")` }} />
+          <div
+            className="book-cover"
+            style={{
+              width: 128,
+              height: 192,
+              backgroundImage:
+                `url("${(imageLinks && imageLinks.smallThumbnail)
+                  ? imageLinks.smallThumbnail
+                  : ''
+                }")`,
+            }}
+          />
           <div className="book-shelf-changer">
             <select
               value={shelf || 'none'}
