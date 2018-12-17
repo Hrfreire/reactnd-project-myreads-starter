@@ -1,22 +1,14 @@
 import React from 'react'
-// import * as BooksAPI from './BooksAPI'
-import './App.css'
 import * as BooksAPI from './BooksAPI';
+import { Route } from 'react-router-dom';
+import './App.css'
 import BookList from './components/BookList';
 import BookSearch from './components/BookSearch';
 
 class BooksApp extends React.Component {
   state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
     books: [],
-    searchedBooks: [],
-
-    showSearchPage: false
+    searchedBooks: []
   }
 
   componentDidMount() {
@@ -24,19 +16,6 @@ class BooksApp extends React.Component {
       .then((books) => {
         this.setState({ books });
       });
-  }
-
-  onClickAdd = () => {
-    this.setState({
-      showSearchPage: true,
-      searchedBooks: []
-    });
-  }
-
-  onClickCloseAdd = () => {
-    this.setState({
-      showSearchPage: false
-    });
   }
 
   onSearchBooks = (query) => {
@@ -119,18 +98,31 @@ class BooksApp extends React.Component {
 
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <BookSearch
-            books={searchedBooks}
-            onChangeBookShelf={this.onChangeBookShelf}
-            onSearchBooks={this.onSearchBooks}
-            onClickCloseAdd={this.onClickCloseAdd}
-          />
-        ) : <BookList 
-              books={books}
-              onClickAdd={this.onClickAdd}
-              onChangeBookShelf={this.onChangeBookShelf}
-            />}
+        <Route 
+          path="/search"
+          exact
+          render={() => {
+            return (
+              <BookSearch
+                books={searchedBooks}
+                onChangeBookShelf={this.onChangeBookShelf}
+                onSearchBooks={this.onSearchBooks}
+              />
+            )
+          }}
+        />
+        <Route 
+          path="/"
+          exact
+          render={() => {
+            return (
+              <BookList 
+                books={books}
+                onChangeBookShelf={this.onChangeBookShelf}
+              />
+            )
+          }}
+        />
       </div>
     )
   }

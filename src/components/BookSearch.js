@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import Book from './Book';
 
 class BookSearch extends Component {
   
   static propTypes = {
-    onClickCloseAdd: PropTypes.func.isRequired,
     onSearchBooks: PropTypes.func.isRequired,
     onChangeBookShelf: PropTypes.func.isRequired,
     books: PropTypes.arrayOf(PropTypes.shape({
@@ -25,18 +25,17 @@ class BookSearch extends Component {
   
   render() {
 
-    const { books, onChangeBookShelf, onClickCloseAdd } = this.props;
+    const { books, onChangeBookShelf } = this.props;
 
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <button
-            type="button"
+          <Link
             className="close-search"
-            onClick={onClickCloseAdd}
+            to="/"
           >
             Close
-          </button>
+          </Link>
           <div className="search-books-input-wrapper">
             {/*
               NOTES: The search from BooksAPI is limited to a particular set of search terms.
