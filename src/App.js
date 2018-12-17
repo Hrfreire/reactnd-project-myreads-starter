@@ -60,7 +60,7 @@ class BooksApp extends React.Component {
 
   onChangeBookShelf = (book, newShelf) => {
     
-    BooksAPI.update(book, newShelf) //update the book on server
+    return BooksAPI.update(book, newShelf) //update the book on server
       .then(() => { //after the server update, change the state to reflect the update.
         this.setState((prevState) => {
           //clone the book array.
