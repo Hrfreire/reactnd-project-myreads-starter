@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Spin } from 'antd';
+import { Spin, message } from 'antd';
 
 class Book extends Component {
   
@@ -11,7 +11,12 @@ class Book extends Component {
   onChangeBookShelf = (book, shelf) => {
     this.setState({ loading: true});
     this.props.onChangeBookShelf(book, shelf)
-      .then(() => this.setState({ loading: false }));
+      .then(() => {
+        this.setState({ loading: false });
+        message.success(`The book "${book.title}" was successfully updated`);
+      }).catch(() => {
+        message.error(`Something went wrong updating the book "${book.title}"`)
+      });
   }
   
   render() {
