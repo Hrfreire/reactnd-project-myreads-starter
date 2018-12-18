@@ -100,6 +100,15 @@ body, .app {
   outline: none;
 }
 
+.search-no-book-found {
+  display: flex;
+  width: 100%;
+  height: 100px;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75em;
+}
+
 .close-search {
   display: block;
   top: 20px;
@@ -184,6 +193,15 @@ button:active {
   height: 100%;
   opacity: 0;
   cursor: pointer;
+}
+
+.book-spin {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  width: 100%;
+  height: 100%;
 }
 
 /* book cover */

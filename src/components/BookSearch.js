@@ -26,10 +26,37 @@ class BookSearch extends Component {
   componentWillUnmount() {
     this.props.onSearchBooks('');
   }
+
+  renderSearchResults = () => {
+    const { books, onChangeBookShelf } = this.props;
+
+    return (
+      <ol className="books-grid">
+        { 
+          books.map(book => (
+            <Book 
+              key={book.id }
+              book={book}
+              onChangeBookShelf={onChangeBookShelf}
+            />
+          ))
+        }
+      </ol>
+    )
+  }
+
+  renderNoBookFound = () => {
+    return (
+      <div className="search-no-book-found">
+        <span>No book found</span>
+      </div>
+    )
+  }
   
   render() {
 
-    const { books, onChangeBookShelf } = this.props;
+    const { books } = this.props;
+    const { query } = this.state;
 
     return (
       <div className="search-books">
@@ -50,7 +77,7 @@ class BookSearch extends Component {
               you don't find a specific author or title. Every search is limited by search terms.
             */}
             <input 
-              value={this.state.query}
+              value={query}
               type="text" 
               placeholder="Search by title or author"
               onChange={event => this.onQueryChange(event.target.value)}
@@ -58,17 +85,10 @@ class BookSearch extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid">
-            { 
-              books.map(book => (
-                <Book 
-                  key={book.id }
-                  book={book}
-                  onChangeBookShelf={onChangeBookShelf}
-                />
-              ))
-            }
-          </ol>
+          { books.length === 0 && query !== ''
+            ? this.renderNoBookFound()
+            : this.renderSearchResults()
+          }
         </div>
       </div>
     );

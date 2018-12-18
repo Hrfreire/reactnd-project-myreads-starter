@@ -10,6 +10,7 @@ class Book extends Component {
 
   onChangeBookShelf = (book, shelf) => {
     this.setState({ loading: true});
+    
     this.props.onChangeBookShelf(book, shelf)
       .then(() => {
         this.setState({ loading: false });
@@ -33,14 +34,7 @@ class Book extends Component {
             <Spin
               size="large"
               spinning={this.state.loading}
-              style={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                top: '50%',
-                width: '100%',
-                height: '100%',
-              }}
+              className='book-spin'
             />
             <div
               className="book-cover"
