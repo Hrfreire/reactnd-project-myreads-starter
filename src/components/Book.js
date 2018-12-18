@@ -78,8 +78,8 @@ Book.propTypes = {
     title: PropTypes.string.isRequired,
     authors: PropTypes.arrayOf(PropTypes.string),
     imageLinks: PropTypes.shape({
-      smallThumbnail: PropTypes.string.isRequired,
-    }).isRequired,
+      smallThumbnail: PropTypes.string,
+    }),
     shelf: PropTypes.string,
   }).isRequired,
   onChangeBookShelf: PropTypes.func.isRequired,
