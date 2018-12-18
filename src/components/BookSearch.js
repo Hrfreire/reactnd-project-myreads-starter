@@ -22,6 +22,10 @@ class BookSearch extends Component {
 
     this.props.onSearchBooks(query);
   }
+
+  componentWillUnmount() {
+    this.props.onSearchBooks('');
+  }
   
   render() {
 

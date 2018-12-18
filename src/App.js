@@ -28,7 +28,7 @@ class BooksApp extends React.Component {
     BooksAPI.search(query)
       .then((searchedBooks) => {
         if(searchedBooks instanceof Array) {
-          const updatedBooks = this.updateSearchedBooksWithShelfs(searchedBooks);
+          const updatedBooks = this.updateSearchedBooksWithShelves(searchedBooks);
           
           this.setState({ searchedBooks: updatedBooks  });
         } else {
@@ -76,7 +76,10 @@ class BooksApp extends React.Component {
       })
   }
 
-  updateSearchedBooksWithShelfs = (searchedBooks) => {
+  updateSearchedBooksWithShelves = (searchedBooks) => {
+    //this function sets the shelves of the current books on
+    //their copies on searchedBooks
+    
     const { books } = this.state;
 
     const updatedBooks = searchedBooks.map(searchedBook => {
