@@ -97,7 +97,7 @@ class BooksApp extends React.Component {
 
   render() {
 
-    const { searchedBooks, books } = this.state;
+    const { searchedBooks, books, selectedBooks } = this.state;
 
     return (
       <div className="app">
@@ -108,8 +108,10 @@ class BooksApp extends React.Component {
             return (
               <BookSearch
                 books={searchedBooks}
+                selectedBooks={selectedBooks}
                 onChangeBookShelf={this.onChangeBookShelf}
                 onSearchBooks={this.onSearchBooks}
+                onSelectBook={this.onSelectBook}
               />
             )
           }}
@@ -121,7 +123,9 @@ class BooksApp extends React.Component {
             return (
               <BookList 
                 books={books}
+                selectedBooks={selectedBooks}
                 onChangeBookShelf={this.onChangeBookShelf}
+                onSelectBook={this.onSelectBook}
               />
             )
           }}

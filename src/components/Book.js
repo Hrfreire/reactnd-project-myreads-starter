@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Spin, message } from 'antd';
+import { Spin, message, Checkbox } from 'antd';
 
 class Book extends Component {
   
@@ -21,7 +21,7 @@ class Book extends Component {
   }
   
   render() {
-    const { book } = this.props;
+    const { book, selected, onSelectBook } = this.props;
 
     const {
       title, authors, imageLinks, shelf,
@@ -31,6 +31,11 @@ class Book extends Component {
       <li>
         <div className="book">
           <div className="book-top">
+            <Checkbox
+              className='book-checkbox'
+              checked={selected}
+              onChange={() => onSelectBook(book)}
+            />
             <Spin
               size="large"
               spinning={this.state.loading}
@@ -81,7 +86,9 @@ Book.propTypes = {
     }),
     shelf: PropTypes.string,
   }).isRequired,
+  selected: PropTypes.bool.isRequired,
   onChangeBookShelf: PropTypes.func.isRequired,
+  onSelectBook: PropTypes.func.isRequired,
 };
 
 export default Book;

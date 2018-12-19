@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Book from './Book';
+import MassActionSelect from './MassActionSelect';
 
 class BookSearch extends Component {
   
@@ -10,38 +11,66 @@ class BookSearch extends Component {
     onChangeBookShelf: PropTypes.func.isRequired,
     books: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.string.isRequired,
-    })).isRequired,
+    })).isRequired
   };
 
   state = {
-    query: ''
+    query: '',
+    selectedBooks: []
   };
-
-  onQueryChange = (query) => {
-    this.setState({ query });
-
-    this.props.onSearchBooks(query);
-  }
 
   componentWillUnmount() {
     this.props.onSearchBooks('');
   }
 
+  onQueryChange = (query) => {
+    this.setState({ query, selectedBooks: [] });
+
+    this.props.onSearchBooks(query);
+  }
+
+  onSelectBook = (book) => {
+    this.setState((prevState) => {
+      const selectedBooks = [ ...prevState.selectedBooks ];
+      const bookIndex = selectedBooks.findIndex(b => b.id === book.id);
+      
+      if(bookIndex !== -1){ //the book is selected, lets uncheck.
+        selectedBooks.splice(bookIndex, 1)
+        return { selectedBooks };
+      }
+
+      //check the book.
+      return { selectedBooks: [...selectedBooks, book] };
+    });
+  }
+  
   renderSearchResults = () => {
     const { books, onChangeBookShelf } = this.props;
+    const { selectedBooks } = this.state;
 
     return (
-      <ol className="books-grid">
-        { 
-          books.map(book => (
-            <Book 
-              key={book.id }
-              book={book}
+      <React.Fragment>
+        {books.length > 0 &&
+          <MassActionSelect
+              selectedBooks={selectedBooks}
               onChangeBookShelf={onChangeBookShelf}
-            />
-          ))
+              resetSelectedBooks={() => this.setState({ selectedBooks: []})}
+          />
         }
-      </ol>
+        <ol className="books-grid">
+          { 
+            books.map(book => (
+              <Book 
+                key={book.id }
+                book={book}
+                onChangeBookShelf={onChangeBookShelf}
+                onSelectBook={this.onSelectBook}
+                selected={selectedBooks.find(b => b.id === book.id) !== undefined}
+              />
+            ))
+          }
+        </ol>
+      </React.Fragment>
     )
   }
 
