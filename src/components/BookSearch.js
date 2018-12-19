@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { Spin } from 'antd';
 import Book from './Book';
 import MassActionSelect from './MassActionSelect';
 
@@ -16,7 +17,8 @@ class BookSearch extends Component {
 
   state = {
     query: '',
-    selectedBooks: []
+    selectedBooks: [],
+    loading: false
   };
 
   componentWillUnmount() {
@@ -24,9 +26,10 @@ class BookSearch extends Component {
   }
 
   onQueryChange = (query) => {
-    this.setState({ query, selectedBooks: [] });
+    this.setState({ query, selectedBooks: [], loading: true });
 
-    this.props.onSearchBooks(query);
+    this.props.onSearchBooks(query)
+      .finally(() => this.setState({ loading: false }));
   }
 
   onSelectBook = (book) => {
@@ -85,7 +88,7 @@ class BookSearch extends Component {
   render() {
 
     const { books } = this.props;
-    const { query } = this.state;
+    const { query, loading } = this.state;
 
     return (
       <div className="search-books">
@@ -114,7 +117,11 @@ class BookSearch extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          { books.length === 0 && query !== ''
+          <div className="search-loading-wrapper">
+            <Spin spinning={loading} size="large" />
+          </div>
+          
+          { books.length === 0 && query !== '' && !loading
             ? this.renderNoBookFound()
             : this.renderSearchResults()
           }

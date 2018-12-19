@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { Spin } from 'antd';
 import BookShelf from './BookShelf';
 import MassActionSelect from './MassActionSelect';
 
@@ -11,6 +12,7 @@ class BookList extends Component {
       shelf: PropTypes.string.isRequired,
     })).isRequired,
     onChangeBookShelf: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -32,9 +34,21 @@ class BookList extends Component {
     });
   }
 
+  renderLoading = () => {
+    return (
+      <div className="list-book-loading-wrapper">
+        <Spin size="large" />
+      </div>
+    )
+  }
+
   render() {
-    const { books, onChangeBookShelf } = this.props;
+    const { books, onChangeBookShelf, loading } = this.props;
     const { selectedBooks } = this.state;
+
+    if(loading) {
+      return this.renderLoading();
+    }
     
     return (
       <div className="list-books">

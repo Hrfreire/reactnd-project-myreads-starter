@@ -1,6 +1,7 @@
 import React from 'react'
-import * as BooksAPI from './BooksAPI';
 import { Route } from 'react-router-dom';
+import { message } from 'antd';
+import * as BooksAPI from './BooksAPI';
 import './App.css'
 import BookList from './components/BookList';
 import BookSearch from './components/BookSearch';
@@ -8,13 +9,16 @@ import BookSearch from './components/BookSearch';
 class BooksApp extends React.Component {
   state = {
     books: [],
-    searchedBooks: []
+    searchedBooks: [],
+    loadingBooks: true
   }
 
   componentDidMount() {
     BooksAPI.getAll()
-      .then((books) => {
-        this.setState({ books });
+      .then((books) => this.setState({ books, loadingBooks: false }))
+      .catch(() => {
+        message.error('Failed to load books. Check your internet connection.');
+        this.setState({ loadingBooks: false });
       });
   }
 
@@ -22,10 +26,10 @@ class BooksApp extends React.Component {
 
     if(query === '') {
       this.setState({ searchedBooks: [] });
-      return;
+      return Promise.resolve();
     }
 
-    BooksAPI.search(query)
+    return BooksAPI.search(query)
       .then((searchedBooks) => {
         if(searchedBooks instanceof Array) {
           const updatedBooks = this.updateSearchedBooksWithShelves(searchedBooks);
@@ -97,7 +101,7 @@ class BooksApp extends React.Component {
 
   render() {
 
-    const { searchedBooks, books, selectedBooks } = this.state;
+    const { searchedBooks, books, selectedBooks, loadingBooks } = this.state;
 
     return (
       <div className="app">
@@ -123,6 +127,7 @@ class BooksApp extends React.Component {
             return (
               <BookList 
                 books={books}
+                loading={loadingBooks}
                 selectedBooks={selectedBooks}
                 onChangeBookShelf={this.onChangeBookShelf}
                 onSelectBook={this.onSelectBook}

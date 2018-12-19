@@ -13,11 +13,11 @@ class Book extends Component {
     
     this.props.onChangeBookShelf(book, shelf)
       .then(() => {
-        this.setState({ loading: false });
         message.success(`The book "${book.title}" was successfully updated`);
       }).catch(() => {
         message.error(`Something went wrong updating the book "${book.title}"`)
-      });
+      })
+      .finally(() => this.setState({ loading: false }));
   }
   
   render() {

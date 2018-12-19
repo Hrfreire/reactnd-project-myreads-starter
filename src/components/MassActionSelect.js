@@ -23,12 +23,11 @@ class MassActionSelect extends Component {
       .then(() => {
         resetSelectedBooks();
         message.success('All books were successfully updated');
-        this.setState({ loading: false });
       })
       .catch(() => {
         message.error('Something went wrong updating the books');
-        this.setState({ loading: false });
-      });
+      })
+      .finally(this.setState({ loading: false }));
   }
   
   render() {
