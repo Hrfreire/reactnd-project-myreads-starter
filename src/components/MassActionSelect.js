@@ -19,7 +19,7 @@ class MassActionSelect extends Component {
     const { selectedBooks, onChangeBookShelf, resetSelectedBooks } = this.props;
     this.setState({ loading: true });
 
-    Promise.all(selectedBooks.map(book => onChangeBookShelf(book, shelf)))
+    return Promise.all(selectedBooks.map(book => onChangeBookShelf(book, shelf)))
       .then(() => {
         resetSelectedBooks();
         message.success('All books were successfully updated');
