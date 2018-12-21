@@ -93,7 +93,7 @@ class BooksApp extends React.Component {
         return searchedBook;
       }
 
-      return { ...searchedBook, shelf: book.shelf};
+      return { ...searchedBook, shelf: book.shelf };
     });
 
     return updatedBooks;
